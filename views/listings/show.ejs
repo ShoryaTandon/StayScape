@@ -1,0 +1,197 @@
+<% layout("./layouts/boilerplate") %>
+
+<body class="bg-light">
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      <!-- LISTING CARD -->
+      <div class="card listing-card shadow-sm">
+
+        <img src="<%= listing.image.url %>" class="listing-img">
+
+        <div class="card-body p-4">
+
+          <!-- TITLE + AVG -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="fw-bold mb-0"><%= listing.title %></h2>
+
+            <% if (listing.reviews.length > 0) { 
+              let sum = 0;
+              listing.reviews.forEach(r => sum += r.rating);
+              let avg = (sum / listing.reviews.length).toFixed(1);
+            %>
+              <span class="avg-rating">
+                ⭐ <%= avg %>
+              </span>
+            <% } %>
+          </div>
+
+          <p class="text-muted mb-2">
+            <i class="bi bi-geo-alt-fill"></i>
+            <%= listing.location %>, <%= listing.country %>
+          </p>
+
+          <h4 class="price mb-3">
+            ₹ <%= listing.price.toLocaleString("en-IN") %>
+          </h4>
+
+          <p class="owner-text">
+            Owned by <span>@<%= listing.owner.username %></span>
+          </p>
+
+          <p class="mb-4"><%= listing.description %></p>
+
+          <% if(currentUser && currentUser._id.equals(listing.owner._id)){ %>
+          <div class="d-flex gap-3 mb-4">
+            <a href="/listings/<%= listing._id %>/edit" >
+              <button class="btn btn-dark rounded-pill px-4">Edit</button>
+            </a>
+
+            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+              <button class="btn btn-outline-dark rounded-pill px-4">Delete</button>
+            </form>
+          </div>
+           <hr>
+
+          <% } %>
+
+         
+          <!-- REVIEW FORM -->
+          <% if(currentUser){ %>
+          <h4 class="section-title">Leave a review</h4>
+
+          <div class="card review-form-card shadow-sm mb-4">
+            <div class="card-body">
+
+              <form id="reviewForm" action="/listings/<%= listing._id %>/reviews" method="POST">
+
+                <label class="form-label fw-semibold mb-2">Rating</label>
+
+                <fieldset class="starability-basic mb-2">
+                  <input type="radio" id="rate5" name="review[rating]" value="5"><label for="rate5"></label>
+                  <input type="radio" id="rate4" name="review[rating]" value="4"><label for="rate4"></label>
+                  <input type="radio" id="rate3" name="review[rating]" value="3"><label for="rate3"></label>
+                  <input type="radio" id="rate2" name="review[rating]" value="2"><label for="rate2"></label>
+                  <input type="radio" id="rate1" name="review[rating]" value="1"><label for="rate1"></label>
+                </fieldset>
+
+                <div id="ratingError" class="text-danger small d-none">
+                  Please select a rating
+                </div>
+
+                <textarea name="review[comments]" rows="4"
+                  class="form-control rounded-3 mt-3"
+                  placeholder="Share your experience..."
+                  required></textarea>
+
+                <button class="btn btn-dark rounded-pill px-4 mt-3 mb-2">
+                  Submit review
+                </button>
+
+              </form>
+            </div>
+          </div>
+          <% } %>
+
+          <!-- ALL REVIEWS -->
+          <hr class="my-5">
+
+<h4 class="section-title mb-4">All reviews</h4>
+
+<% if (listing.reviews.length === 0) { %>
+  <div class="empty-review-state">
+    <i class="bi bi-chat-left-text"></i>
+    <p>No reviews yet</p>
+    <% if(currentUser){ %>
+      <span>Be the first to share your experience ✨</span>
+    <% } %>
+  </div>
+<% } %>
+
+<div class="row g-4">
+  <% for (let review of listing.reviews) { %>
+    <div class="col-md-6">
+      <div class="card review-card shadow-sm h-100">
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <div class="review-user">@<%= review.author.username %></div>
+              <div class="review-date" data-date="<%= review.createdAt %>"></div>
+            </div>
+
+            <div class="starability-readonly">
+              <% for(let i=1;i<=5;i++){ %>
+                <span class="star <%= i <= review.rating ? '' : 'inactive' %>">★</span>
+              <% } %>
+            </div>
+          </div>
+
+          <p class="review-text"><%= review.comments %></p>
+
+          <% if (currentUser && review.author &&
+            review.author._id.toString() === currentUser._id.toString()) { %>
+            <form method="POST"
+              action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+              <button class="btn btn-sm btn-outline-dark rounded-pill">
+                Delete
+              </button>
+            </form>
+          <% } %>
+
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  SCRIPTS -->
+<script>
+document.getElementById("reviewForm")?.addEventListener("submit", e => {
+  if (!document.querySelector('input[name="review[rating]"]:checked')) {
+    e.preventDefault();
+    document.getElementById("ratingError").classList.remove("d-none");
+  }
+});
+
+function timeAgo(date) {
+  // Ensure `date` is a Date object
+  if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+
+  const s = Math.floor((new Date() - date) / 1000);
+  const map = [
+    ["year", 31536000],
+    ["month", 2592000],
+    ["day", 86400],
+    ["hour", 3600],
+    ["minute", 60]
+  ];
+
+  for (let [label, seconds] of map) {
+    const n = Math.floor(s / seconds);
+    if (n >= 1) return `${n} ${label}${n > 1 ? "s" : ""} ago`;
+  }
+
+  // Optional: handle seconds less than 60
+  if (s > 0) return `${s} second${s > 1 ? "s" : ""} ago`;
+
+  return "just now";
+}
+
+document.querySelectorAll(".review-date").forEach(el=>{
+  el.innerText = timeAgo(new Date(el.dataset.date));
+});
+</script>
+
+</body>

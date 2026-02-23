@@ -1,0 +1,175 @@
+/* ===== LISTING ===== */
+.listing-card {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.listing-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+.price {
+  color: black;
+  font-weight: 700;
+}
+
+.owner-text {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.owner-text span {
+  font-weight: 600;
+  color: #000;
+}
+
+.avg-rating {
+  background: #111;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: .9rem;
+}
+
+/* ===== SECTIONS ===== */
+.section-title {
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+}
+
+/* ===== STAR INPUT ===== */
+.starability-basic {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  font-size: 2.2rem;
+  line-height: 1;
+  gap: 4px;
+}
+
+.starability-basic input {
+  position: absolute;
+  left: -9999px;
+}
+
+.starability-basic label {
+  cursor: pointer;
+  color: #d1d5db;
+  line-height: 1;
+  height: 1em;
+  display: flex;
+  align-items: center;
+  transition: transform .2s ease, color .2s ease;
+}
+
+.starability-basic label::before {
+  content: "★";
+}
+
+.starability-basic input:checked ~ label,
+.starability-basic label:hover,
+.starability-basic label:hover ~ label {
+  color: #f5c518;
+  transform: scale(1.15);
+}
+
+/* ===== READ ONLY STARS ===== */
+.starability-readonly {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;
+  gap: 2px;
+}
+
+.starability-readonly .star {
+  color: #f5c518;
+}
+
+.starability-readonly .inactive {
+  color: #d1d5db;
+}
+
+/* ===== REVIEWS ===== */
+.review-card {
+  border-radius: 14px;
+  padding: 15px;
+}
+.review-card:hover{
+    box-shadow:2px 2px 3px gainsboro !important;
+    
+}
+
+.review-user {
+  font-weight: 600;
+}
+
+.review-date {
+  font-size: .75rem;
+  color: #888;
+}
+
+.review-text {
+  margin: .5rem 0 1rem;
+  color: #444;
+}
+
+.review-form-card {
+  border-radius: 14px;
+  padding-left:10px;
+  padding-right:7px;
+}
+
+/* Empty review state */
+.empty-review-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  margin-bottom:1rem;
+  background: #fafafa;
+  border-radius: 14px;
+  color: #555;
+}
+
+.empty-review-state i {
+  font-size: 2.2rem;
+  color: #bbb;
+  margin-bottom: .8rem;
+}
+
+.empty-review-state p {
+  font-weight: 600;
+  margin-bottom: .2rem;
+}
+
+.empty-review-state span {
+  font-size: .85rem;
+  color: #888;
+}
+
+/* Section spacing */
+.section-title {
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+/* Softer review cards */
+.review-card {
+  border-radius: 16px;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.08) !important;
+}
+
+/* Stars polish */
+.starability-readonly .star {
+  font-size: .95rem;
+}
+
+/* Subtle dividers */
+hr {
+  opacity: .08;
+}

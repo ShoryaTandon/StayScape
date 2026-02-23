@@ -1,0 +1,55 @@
+<% layout("./layouts/boilerplate")%>
+
+<body>
+    <div class="row mt-3">
+        <h3 class="col-6 offset-3 mb-3">
+            Signup On StayScape!
+
+        </h3>
+            <div class="col-6 offset-3">
+                
+                <form method="POST" action="/signup" class="needs-validation" novalidate>
+                  <label for="username" class="form-label mb-2">Username</label>
+                  <input
+                  name="username"
+                  id="username"
+                  type="text"
+                  class="form-control mb-1"
+                  placeholder="_John5678_"
+                  required
+                  />
+                  <div class="invalid-feedback">
+                    Username already exists
+                  </div>
+
+                
+                   <label for="email" class="form-label mb-2">Email</label>
+                  <input
+                  name="email"
+                  id="email"
+                  type="email"
+                  class="form-control mb-1"
+                  placeholder="john@gmail.com"
+                  required
+                  />
+                  <div class="invalid-feedback">
+                    Please Enter Valid Email!
+                  </div>
+
+                  <label for="password" class="form-label mb-2">Password</label>
+                  <input
+                  name="password"
+                  id="password"
+                  type="password"
+                  class="form-control mb-1"
+                  placeholder="Must be Strong"
+                  required
+                  />
+                 
+                  <button type="submit" class="btn btn-dark rounded-pill mt-3">
+                    Sign Up
+                  </button>
+                </form>
+            </div>
+    </div>
+</body>
