@@ -23,7 +23,7 @@ const express=require("express");
 
 
 let app=express();
-const port =8080;
+
 
 const path =require("path");
 app.set("view engine", "ejs");
@@ -394,6 +394,8 @@ app.use(function(err, req, res, next){
 });
 
 
-app.listen(port,function(){
-    console.log("server is ready");
-})//server on
+ port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`server is ready on port ${port}`);
+});
